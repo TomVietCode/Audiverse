@@ -12,6 +12,8 @@ const port: string = process.env.PORT
 app.set("views", `${__dirname}/views`)
 app.set("view engine", "pug")
 
+app.use(express.static("public"))
+
 clientRoutes(app)
 
 app.listen(port, () => {
