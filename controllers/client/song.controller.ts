@@ -21,11 +21,11 @@ export const list = async (req: Request, res: Response) => {
     })
 
     for (const song of songs) {
-      const singerName = await Singer.findOne({
+      const singer = await Singer.findOne({
         _id: song.singerId
       }).select("name")
 
-      song["singer"] = singerName
+      song["singer"] = singer.name
     }
 
     res.render("client/pages/songs/list", {
@@ -34,5 +34,34 @@ export const list = async (req: Request, res: Response) => {
     })
   } catch (error) {
     res.redirect("/topics")
+  }
+}
+
+// [GET] /song/detail/:slugSong
+export const detail = async (req: Request, res: Response) => {
+  const slugSong: string = req.params.slugSong
+  try {
+    const song = await Song.findOne({
+      slug: slugSong,
+      status: "active"
+    })
+
+    const singer = await Singer.findOne({
+      _id: song.singerId
+    }).select("name")
+  
+  
+    const topic = await Topic.findOne({
+      _id: song.topicId
+    }).select("title")
+  
+    res.render("client/pages/songs/detail", {
+      pageTitle: song.title,
+      song: song,
+      singer: singer,
+      topic: topic
+    })
+  } catch (error) {
+    res.redirect("back")
   }
 }
