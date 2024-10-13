@@ -65,3 +65,22 @@ export const detail = async (req: Request, res: Response) => {
     res.redirect("back")
   }
 }
+
+// [PATCH] /song/like/:type/:songSlug
+export const like = async (req: Request, res: Response) => {
+  const isLike: boolean = req.params.type === "true" ? true : false
+
+  await Song.updateOne({
+    slug: req.params.songSlug
+  }, {
+    $inc: {like: isLike ? 1 : -1}
+  })
+
+  const totalLike = await Song.findOne({
+    slug: req.params.songSlug
+  }).select("like")
+  res.json({
+    code: 200,
+    totalLike: totalLike.like
+  })
+}

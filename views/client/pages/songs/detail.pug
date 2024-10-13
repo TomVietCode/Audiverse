@@ -16,8 +16,9 @@ block main
               <i class="fa-solid fa-microphone-lines"></i> #{singer.name}
             div(class="inner-action inner-topic")
               <i class="fa-solid fa-music"></i> #{topic.title}
-            div(class="inner-action inner-like")
-              <i class="fa-regular fa-thumbs-up"></i> #{song.like}
+            div(class="inner-action inner-like" song-slug=song.slug)
+              <i class="fa-regular fa-thumbs-up"></i> 
+              span(class="like-count") #{song.like}
             div(class="inner-action inner-heart")
               <i class="fa-regular fa-heart"></i> Bài hát yêu thích
           .inner-play
