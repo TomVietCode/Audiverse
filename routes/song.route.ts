@@ -7,6 +7,7 @@ router.get("/:slugTopic", controller.list)
 
 router.get("/detail/:slugSong", controller.detail)
 
-router.patch("/like/:type/:songSlug", controller.like)
+router.patch("/like/:type/:songId", controller.like)
 
+router.patch("/favourite/:type/:songId", controller.favourite)
 export const songRoutes = router

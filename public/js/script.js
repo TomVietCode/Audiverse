@@ -33,11 +33,11 @@ if (likeButton) {
   likeButton.addEventListener("click", () => {
     likeButton.classList.toggle("active")
 
-    const songSlug = likeButton.getAttribute("song-slug")
+    const songId = likeButton.getAttribute("song-id")
 
     const type = likeButton.classList.contains("active") ? "true" : "false"
 
-    fetch(`/songs/like/${type}/${songSlug}`, {
+    fetch(`/songs/like/${type}/${songId}`, {
       method: "PATCH",
     })
       .then(res => res.json())
@@ -50,3 +50,27 @@ if (likeButton) {
   })
 }
 // End Like
+
+// Fav Song
+const favButton = document.querySelector(".inner-heart")
+if (favButton) {
+  favButton.addEventListener("click", () => {
+    favButton.classList.toggle("active")
+
+    const songId = favButton.getAttribute("song-id")
+
+    const type = favButton.classList.contains("active") ? "true" : "false"
+
+    fetch(`/songs/favourite/${type}/${songId}`, {
+      method: "PATCH",
+    })
+      .then(res => res.json())
+      .then(data => {
+        // if(data.code === 200) {
+        //   const likeCount = likeButton.querySelector(".like-count")
+        //   likeCount.textContent = data.totalLike
+        // }
+      })
+  })
+}
+// Fav Song
