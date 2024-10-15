@@ -1,29 +1,29 @@
-import { Request, Response } from "express";
-import Topic from "../../models/topic.model";
-import Song from "../../models/song.model";
-import Singer from "../../models/singer.model";
-import FavSong from "../../models/fav-song.model";
+import { Request, Response } from "express"
+import Topic from "../../models/topic.model"
+import Song from "../../models/song.model"
+import Singer from "../../models/singer.model"
+import FavSong from "../../models/fav-song.model"
 
 // [GET] /songs/:slugTopic
 export const list = async (req: Request, res: Response) => {
   try {
     const currentTopic = await Topic.findOne({
       slug: req.params.slugTopic,
-      status: "active"
+      status: "active",
     })
 
-    if(!currentTopic){
+    if (!currentTopic) {
       res.redirect("/topics")
     }
 
     const songs = await Song.find({
       topicId: currentTopic._id,
-      status: "active"
+      status: "active",
     })
 
     for (const song of songs) {
       const singer = await Singer.findOne({
-        _id: song.singerId
+        _id: song.singerId,
       }).select("name")
 
       song["singer"] = singer.name
@@ -31,7 +31,7 @@ export const list = async (req: Request, res: Response) => {
 
     res.render("client/pages/songs/list", {
       pageTitle: currentTopic.title,
-      songs: songs
+      songs: songs,
     })
   } catch (error) {
     res.redirect("/topics")
@@ -44,26 +44,27 @@ export const detail = async (req: Request, res: Response) => {
   try {
     const song = await Song.findOne({
       slug: slugSong,
-      status: "active"
+      status: "active",
     })
 
-    const singer = await Singer.findOne({
-      _id: song.singerId
-    }).select("name")
-  
-  
-    const topic = await Topic.findOne({
-      _id: song.topicId
-    }).select("title")
-  
-    const favSong = await FavSong.findOne({ userId: res.locals.user.id, songId: song._id }) ? true : false
+    if (!song) {
+      return res.redirect("back")
+    }
+
+    const [singer, topic, favSong] = await Promise.all([
+      Singer.findOne({ _id: song.singerId }).select("name"),
+      Topic.findOne({ _id: song.topicId }).select("title"),
+      FavSong.findOne({ userId: res.locals.user.id, songId: song._id })
+        ? true
+        : false,
+    ])
 
     res.render("client/pages/songs/detail", {
       pageTitle: song.title,
       song: song,
       singer: singer,
       topic: topic,
-      favSong: favSong
+      favSong: favSong,
     })
   } catch (error) {
     res.redirect("back")
@@ -74,20 +75,24 @@ export const detail = async (req: Request, res: Response) => {
 export const like = async (req: Request, res: Response) => {
   const isLike: boolean = req.params.type === "true" ? true : false
 
-  await Song.updateOne({
-    _id: req.params.songId
-  }, {
-    [isLike ? "$push" : "$pull"]: {like: res.locals.user.id}
-  })
+  const updatedSong = await Song.findOneAndUpdate(
+    {
+      _id: req.params.songId,
+    },
+    {
+      [isLike ? "$push" : "$pull"]: { like: res.locals.user.id },
+    },
+    {
+      new: true,
+      select: "like",
+    }
+  )
+  
 
-  const likeCount = await Song.findOne({
-    _id: req.params.songId
-  }).select("like")
-
-  const totalLike = likeCount ? likeCount.like.length : "0"
+  const totalLike = updatedSong  ? updatedSong.like.length : "0"
   res.json({
     code: 200,
-    totalLike: totalLike
+    totalLike: totalLike,
   })
 }
 
@@ -95,20 +100,20 @@ export const like = async (req: Request, res: Response) => {
 export const favourite = async (req: Request, res: Response) => {
   const isFav: boolean = req.params.type === "true" ? true : false
 
-  if(isFav) {
+  if (isFav) {
     const record = new FavSong({
       userId: res.locals.user.id,
-      songId: req.params.songId
+      songId: req.params.songId,
     })
     await record.save()
   } else {
     await FavSong.deleteOne({
       userId: res.locals.user.id,
-      songId: req.params.songId
+      songId: req.params.songId,
     })
   }
 
   res.json({
-    code: 200
+    code: 200,
   })
 }
