@@ -56,7 +56,7 @@ export const detail = async (req: Request, res: Response) => {
       _id: song.topicId
     }).select("title")
   
-    const favSong = await FavSong.findOne({ userId: "", songId: song._id }) ? true : false
+    const favSong = await FavSong.findOne({ userId: res.locals.user.id, songId: song._id }) ? true : false
 
     res.render("client/pages/songs/detail", {
       pageTitle: song.title,
@@ -74,20 +74,20 @@ export const detail = async (req: Request, res: Response) => {
 export const like = async (req: Request, res: Response) => {
   const isLike: boolean = req.params.type === "true" ? true : false
 
-  console.log(res.locals.user)
   await Song.updateOne({
     _id: req.params.songId
   }, {
-    $inc: {like: isLike ? 1 : -1}
+    [isLike ? "$push" : "$pull"]: {like: res.locals.user.id}
   })
 
-  const totalLike = await Song.findOne({
+  const likeCount = await Song.findOne({
     _id: req.params.songId
   }).select("like")
 
+  const totalLike = likeCount ? likeCount.like.length : "0"
   res.json({
     code: 200,
-    totalLike: totalLike.like
+    totalLike: totalLike
   })
 }
 
@@ -97,13 +97,13 @@ export const favourite = async (req: Request, res: Response) => {
 
   if(isFav) {
     const record = new FavSong({
-      userId: "",
+      userId: res.locals.user.id,
       songId: req.params.songId
     })
     await record.save()
   } else {
     await FavSong.deleteOne({
-      userId: "",
+      userId: res.locals.user.id,
       songId: req.params.songId
     })
   }
