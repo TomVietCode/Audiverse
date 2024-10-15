@@ -1,0 +1,15 @@
+extends ../../layouts/default.pug
+
+block main 
+  .container.my-3
+    form(
+      action="/user/login"
+      method="POST"
+    )
+      div(class="form-group")
+        label(for="exampleInputEmail1") Email
+        input#exampleInputEmail1(type="email", class="form-control", aria-describedby="emailHelp", placeholder="Nhập email" name="email")
+      div(class="form-group")
+        label(for="exampleInputPassword1") Mật khẩu
+        input#exampleInputPassword1(type="password", class="form-control", placeholder="Nhập mật khẩu" name="password")
+      button(type="submit", class="btn btn-primary") Đăng nhập

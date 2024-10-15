@@ -74,6 +74,7 @@ export const detail = async (req: Request, res: Response) => {
 export const like = async (req: Request, res: Response) => {
   const isLike: boolean = req.params.type === "true" ? true : false
 
+  console.log(res.locals.user)
   await Song.updateOne({
     _id: req.params.songId
   }, {

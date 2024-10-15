@@ -1,3 +1,34 @@
+/* Thiết lập toàn bộ trang với Flexbox */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Đảm bảo trang chiếm ít nhất toàn bộ chiều cao của cửa sổ */
+  margin: 0;
+}
+
+/* Thiết lập cho header */
+.header {
+  background-color: #fff;
+  padding: 1rem;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+/* Thiết lập cho footer */
+.footer {
+  padding: 1rem;
+  margin-top: auto; /* Đẩy footer xuống cuối trang */
+  width: 100%;
+}
+
+/* Nội dung chính */
+.main {
+  flex: 1;
+  padding: 2rem;
+}
+
 /* Header */
 .header {
   border-bottom: 1px solid #ddd;

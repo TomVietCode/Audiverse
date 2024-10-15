@@ -13,6 +13,6 @@ const favSongSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-const FavSong = mongoose.model("FavSong", favSongSchema, "favourite-songs");
+const FavSong = mongoose.model("FavSong", favSongSchema, "favorite-songs");
 
 export default FavSong;
