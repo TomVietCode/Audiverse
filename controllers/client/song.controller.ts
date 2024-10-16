@@ -54,7 +54,7 @@ export const detail = async (req: Request, res: Response) => {
     const [singer, topic, favSong] = await Promise.all([
       Singer.findOne({ _id: song.singerId }).select("name"),
       Topic.findOne({ _id: song.topicId }).select("title"),
-      FavSong.findOne({ userId: res.locals.user.id, songId: song.id })
+      FavSong.findOne({ userId: res.locals.user.id, songId: song.id }),
     ])
 
     res.render("client/pages/songs/detail", {
@@ -118,24 +118,53 @@ export const favoritePatch = async (req: Request, res: Response) => {
 // [GET] /songs/favorite
 export const favSong = async (req: Request, res: Response) => {
   const favSongs = await FavSong.find({
-    userId: res.locals.user.id
+    userId: res.locals.user.id,
   }).lean()
 
   for (const item of favSongs) {
     const song = await Song.findOne({
-      _id: item.songId
-    }).select("avatar title slug singerId");
+      _id: item.songId,
+    }).select("avatar title slug singerId")
 
     const singer = await Singer.findOne({
-      _id: song.singerId
-    }).select("name");
+      _id: song.singerId,
+    }).select("name")
 
-    item["song"] = song;
-    item["singer"] = singer;
+    item["song"] = song
+    item["singer"] = singer
   }
 
   res.render("client/pages/songs/favorite", {
-    pageTitle: "Bài hát yêu thích", 
-    favSongs: favSongs
+    pageTitle: "Bài hát yêu thích",
+    favSongs: favSongs,
   })
+}
+
+// [PATCH] /songs/listen/:songId
+export const listenPatch = async (req: Request, res: Response) => {
+  const songId: string = req.params.songId
+
+  try {
+    const totalListen = await Song.findOneAndUpdate(
+      {
+        _id: songId,
+      },
+      {
+        $inc: { listens: 1 },
+      },
+      {
+        new: true,
+        select: "listens",
+      }
+    )
+
+    if (totalListen) {
+      res.json({
+        code: 200,
+        listens: totalListen.listens
+      })
+    }
+  } catch (error) {
+    res.redirect("back")
+  }
 }

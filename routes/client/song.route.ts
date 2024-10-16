@@ -6,12 +6,14 @@ const router: Router = express.Router()
 
 router.get("/favorite", requireAuth, controller.favSong)
 
-router.get("/:slugTopic", controller.list)
-
 router.get("/detail/:slugSong", controller.detail)
 
 router.patch("/like/:type/:songId", requireAuth ,controller.like)
 
 router.patch("/favorite/:type/:songId", requireAuth, controller.favoritePatch)
+
+router.patch("/listen/:songId", controller.listenPatch)
+
+router.get("/:slugTopic", controller.list)
 
 export const songRoutes = router

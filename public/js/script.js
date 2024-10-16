@@ -24,6 +24,19 @@ if (aplayer) {
   ap.on("pause", () => {
     innerAvatar.style.animationPlayState = "paused"
   })
+
+  ap.on("ended", () => {
+    fetch(`/songs/listen/${songInfo._id}`, {
+      method: "PATCH"
+    })
+      .then(res => res.json())
+      .then(data => {
+        if(data?.code === 200){
+          const totalListen = document.querySelector(".total-listen")
+          totalListen.textContent = data.listens
+        }
+      })
+  })
 }
 // End APlayer
 
