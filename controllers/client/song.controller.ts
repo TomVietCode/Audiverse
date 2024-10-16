@@ -38,7 +38,7 @@ export const list = async (req: Request, res: Response) => {
   }
 }
 
-// [GET] /song/detail/:slugSong
+// [GET] /songs/detail/:slugSong
 export const detail = async (req: Request, res: Response) => {
   const slugSong: string = req.params.slugSong
   try {
@@ -69,7 +69,7 @@ export const detail = async (req: Request, res: Response) => {
   }
 }
 
-// [PATCH] /song/like/:type/:songSlug
+// [PATCH] /songs/like/:type/:songSlug
 export const like = async (req: Request, res: Response) => {
   const isLike: boolean = req.params.type === "true" ? true : false
 
@@ -93,7 +93,7 @@ export const like = async (req: Request, res: Response) => {
   })
 }
 
-// [PATCH] /song/favorite/:type/:songId
+// [PATCH] /songs/favorite/:type/:songId
 export const favoritePatch = async (req: Request, res: Response) => {
   const isFav: boolean = req.params.type === "true" ? true : false
 
@@ -115,7 +115,7 @@ export const favoritePatch = async (req: Request, res: Response) => {
   })
 }
 
-// [GET] /song/favorite
+// [GET] /songs/favorite
 export const favSong = async (req: Request, res: Response) => {
   const favSongs = await FavSong.find({
     userId: res.locals.user.id
