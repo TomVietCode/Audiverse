@@ -6,6 +6,20 @@ body {
   margin: 0;
 }
 
+/* Nút yêu thích trang favorite */
+.song-item .inner-content .inner-heart {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 2px;
+  cursor: pointer;
+}
+.song-item .inner-content .inner-heart.active {
+  color: #b90000;
+}
+.song-item .inner-content .inner-heart.active i {
+  font-weight: 900;
+}
+
 /* Thiết lập cho header */
 .header {
   background-color: #fff;
@@ -62,3 +76,4 @@ body {
   padding: 10px;
 }
 /* End Footer */
+

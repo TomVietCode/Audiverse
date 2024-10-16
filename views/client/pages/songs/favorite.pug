@@ -1,0 +1,18 @@
+extends ../../layouts/default.pug
+
+block main
+  .container.my-3
+    .row
+      each fav in favSongs
+        .col-6.mb-3
+          div(class="song-item")
+            div(class="inner-image")
+              a(href=`/songs/detail/${fav.song.slug}`)
+                img(src=fav.song.avatar)
+            div(class="inner-content")
+              div(class="inner-title")
+                a(href=`/songs/detail/${fav.song.slug}`) #{fav.song.title}
+              div(class="inner-singer") <i class="fa-solid fa-microphone-lines"></i> #{fav.singer.name}
+              div(class="inner-heart active" song-id=fav.songId)
+                <i class="fa-regular fa-heart"></i> Yêu thích
+              div(class="inner-time") <i class="fa-regular fa-clock"></i> 20/10/2023

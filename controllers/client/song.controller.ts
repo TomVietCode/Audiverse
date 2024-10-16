@@ -54,9 +54,7 @@ export const detail = async (req: Request, res: Response) => {
     const [singer, topic, favSong] = await Promise.all([
       Singer.findOne({ _id: song.singerId }).select("name"),
       Topic.findOne({ _id: song.topicId }).select("title"),
-      FavSong.findOne({ userId: res.locals.user.id, songId: song._id })
-        ? true
-        : false,
+      FavSong.findOne({ userId: res.locals.user.id, songId: song.id })
     ])
 
     res.render("client/pages/songs/detail", {
@@ -64,7 +62,7 @@ export const detail = async (req: Request, res: Response) => {
       song: song,
       singer: singer,
       topic: topic,
-      favSong: favSong,
+      favSong: favSong ? true : false,
     })
   } catch (error) {
     res.redirect("back")
@@ -87,17 +85,16 @@ export const like = async (req: Request, res: Response) => {
       select: "like",
     }
   )
-  
 
-  const totalLike = updatedSong  ? updatedSong.like.length : "0"
+  const totalLike = updatedSong ? updatedSong.like.length : "0"
   res.json({
     code: 200,
     totalLike: totalLike,
   })
 }
 
-// [PATCH] /song/favourite/:type/:songId
-export const favourite = async (req: Request, res: Response) => {
+// [PATCH] /song/favorite/:type/:songId
+export const favoritePatch = async (req: Request, res: Response) => {
   const isFav: boolean = req.params.type === "true" ? true : false
 
   if (isFav) {
@@ -115,5 +112,30 @@ export const favourite = async (req: Request, res: Response) => {
 
   res.json({
     code: 200,
+  })
+}
+
+// [GET] /song/favorite
+export const favSong = async (req: Request, res: Response) => {
+  const favSongs = await FavSong.find({
+    userId: res.locals.user.id
+  }).lean()
+
+  for (const item of favSongs) {
+    const song = await Song.findOne({
+      _id: item.songId
+    }).select("avatar title slug singerId");
+
+    const singer = await Singer.findOne({
+      _id: song.singerId
+    }).select("name");
+
+    item["song"] = song;
+    item["singer"] = singer;
+  }
+
+  res.render("client/pages/songs/favorite", {
+    pageTitle: "Bài hát yêu thích", 
+    favSongs: favSongs
   })
 }

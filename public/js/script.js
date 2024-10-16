@@ -52,25 +52,27 @@ if (likeButton) {
 // End Like
 
 // Fav Song
-const favButton = document.querySelector(".inner-heart")
-if (favButton) {
-  favButton.addEventListener("click", () => {
-    favButton.classList.toggle("active")
-
-    const songId = favButton.getAttribute("song-id")
-
-    const type = favButton.classList.contains("active") ? "true" : "false"
-
-    fetch(`/songs/favourite/${type}/${songId}`, {
-      method: "PATCH",
-    })
-      .then(res => res.json())
-      .then(data => {
-        // if(data.code === 200) {
-        //   const likeCount = likeButton.querySelector(".like-count")
-        //   likeCount.textContent = data.totalLike
-        // }
+const favButtons = document.querySelectorAll(".inner-heart")
+if (favButtons.length > 0) {
+  favButtons.forEach(favButton => {
+    favButton.addEventListener("click", () => {
+      favButton.classList.toggle("active")
+  
+      const songId = favButton.getAttribute("song-id")
+  
+      const type = favButton.classList.contains("active") ? "true" : "false"
+  
+      fetch(`/songs/favorite/${type}/${songId}`, {
+        method: "PATCH",
       })
+        .then(res => res.json())
+        .then(data => {
+          // if(data.code === 200) {
+          //   const likeCount = likeButton.querySelector(".like-count")
+          //   likeCount.textContent = data.totalLike
+          // }
+        })
+    })
   })
 }
 // Fav Song
