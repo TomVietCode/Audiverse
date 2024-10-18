@@ -1,5 +1,6 @@
 import express, { Express } from "express"
 import dotenv from "dotenv"
+dotenv.config()
 import { connectDb } from "./config/connectDb"
 import clientRoutes from "./routes/client/index.route"
 import bodyParser from "body-parser"
@@ -7,7 +8,6 @@ import cookieParser from "cookie-parser"
 import adminRoutes from "./routes/admin/index.route"
 import path from "path"
 
-dotenv.config()
 connectDb()
 
 const app: Express = express()
