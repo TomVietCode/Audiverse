@@ -10,7 +10,9 @@ cloudinary.config({
 
 let streamUpload = (buffer) => {
   return new Promise((resolve, reject) => {
-    let stream = cloudinary.uploader.upload_stream(
+    let stream = cloudinary.uploader.upload_stream({
+      resource_type: "auto"
+    },
       (error, result) => {
         if (result) {
           resolve(result);
@@ -40,4 +42,24 @@ export const uploadSingle = async (
   } else {
     next();
   }
+}
+
+export const uploadFields = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  for (const key in req["files"]) {
+    const links = [];
+    for (const item of req["files"][key]) {
+      try {
+        const link = await uploadToCloudinary(item.buffer);
+        links.push(link);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    req.body[key] = links;
+  }
+  next();
 }
