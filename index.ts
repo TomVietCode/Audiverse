@@ -4,6 +4,8 @@ import { connectDb } from "./config/connectDb"
 import clientRoutes from "./routes/client/index.route"
 import bodyParser from "body-parser"
 import cookieParser from "cookie-parser"
+import adminRoutes from "./routes/admin/index.route"
+import path from "path"
 
 dotenv.config()
 connectDb()
@@ -22,6 +24,10 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // Cookie parser
 app.use(cookieParser())
 
+// Tiny MCE
+app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
+
+adminRoutes(app)
 clientRoutes(app)
 
 app.listen(port, () => {
