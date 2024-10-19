@@ -30,12 +30,13 @@ block main
               img(src=song.avatar)
             .inner-audio
               div(id="aplayer" song-info=song singer=singer.name)
-          .inner-desc
-            .inner-label Mô tả
-            .inner-text
-              | #{song.description}
+          if(song.description)
+            .inner-desc
+              .inner-label Mô tả
+                .inner-text
+                  | #{song.description}
           .inner-desc
             .inner-label Lời bài hát
             .inner-text
-              | !{song.lyrics}
+              | !{song.lyrics ? song.lyrics : "Chưa có lyrics cho bài hát này"}  
               

@@ -49,6 +49,7 @@ export const uploadFields = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
+  console.log('oke')
   for (const key in req["files"]) {
     const links = [];
     for (const item of req["files"][key]) {
