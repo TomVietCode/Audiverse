@@ -1,0 +1,79 @@
+/* Thiết lập toàn bộ trang với Flexbox */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Đảm bảo trang chiếm ít nhất toàn bộ chiều cao của cửa sổ */
+  margin: 0;
+}
+
+/* Nút yêu thích trang favorite */
+.song-item .inner-content .inner-heart {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 2px;
+  cursor: pointer;
+}
+.song-item .inner-content .inner-heart.active {
+  color: #b90000;
+}
+.song-item .inner-content .inner-heart.active i {
+  font-weight: 900;
+}
+
+/* Thiết lập cho header */
+.header {
+  background-color: #fff;
+  padding: 1rem;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+/* Thiết lập cho footer */
+.footer {
+  padding: 1rem;
+  margin-top: auto; /* Đẩy footer xuống cuối trang */
+  width: 100%;
+}
+
+/* Nội dung chính */
+.main {
+  flex: 1;
+  padding: 2rem;
+}
+
+/* Header */
+.header {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+  height: 100px;
+  object-fit: cover;
+}
+
+.header .inner-logo img {
+  max-height: 80px;
+  max-width: 100%;
+}
+.header .inner-menu > ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+	flex-wrap: wrap;
+}
+.header .inner-menu > ul > li {
+  margin-left: 20px;
+}
+/* End Header */
+/* Footer */
+.footer {
+  background: #333;
+  color: #fff;
+  text-align: center;
+  padding: 10px;
+}
+/* End Footer */
+

@@ -1,0 +1,22 @@
+extends ../../layouts/default.pug
+block main
+  .container.my-3
+    if(result.length > 0)
+      .row
+        each item in result
+          .col-6.mb-3
+            div(class="song-item")
+              div(class="inner-image")
+                a(href=`/songs/detail/${item.slug}`)
+                  img(src=item.avatar)
+              div(class="inner-content")
+                div(class="inner-title")
+                  a(href=`/songs/detail/${item.slug}`) #{item.title}
+                div(class="inner-singer")
+                  <i class="fa-solid fa-microphone-lines"></i> #{item.singer}
+                div(class="inner-like")
+                  <i class="fa-solid fa-thumbs-up"></i> #{item.like.length}
+                div(class="inner-time") <i class="fa-regular fa-clock"></i> Hôm nay
+    else 
+      .row 
+        h1 Không tìm thấy kết quả nào trùng khớp với: #{keyword} 
