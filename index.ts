@@ -7,6 +7,7 @@ import bodyParser from "body-parser"
 import cookieParser from "cookie-parser"
 import adminRoutes from "./routes/admin/index.route"
 import path from "path"
+import methodOverride from "method-override"
 
 connectDb()
 
@@ -26,6 +27,9 @@ app.use(cookieParser())
 
 // Tiny MCE
 app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
+
+// Method Override
+app.use(methodOverride('_method'))
 
 adminRoutes(app)
 clientRoutes(app)
