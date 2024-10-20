@@ -53,9 +53,6 @@ const detail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             slug: slugSong,
             status: "active",
         });
-        if (!song) {
-            return res.redirect("back");
-        }
         const [singer, topic, favSong] = yield Promise.all([
             singer_model_1.default.findOne({ _id: song.singerId }).select("name"),
             topic_model_1.default.findOne({ _id: song.topicId }).select("title"),
@@ -70,7 +67,7 @@ const detail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         });
     }
     catch (error) {
-        res.redirect("back");
+        console.log(error);
     }
 });
 exports.detail = detail;

@@ -47,10 +47,6 @@ export const detail = async (req: Request, res: Response) => {
       status: "active",
     })
 
-    if (!song) {
-      return res.redirect("back")
-    }
-
     const [singer, topic, favSong] = await Promise.all([
       Singer.findOne({ _id: song.singerId }).select("name"),
       Topic.findOne({ _id: song.topicId }).select("title"),
@@ -65,7 +61,8 @@ export const detail = async (req: Request, res: Response) => {
       favSong: favSong ? true : false,
     })
   } catch (error) {
-    res.redirect("back")
+    console.log(error)
+    // res.redirect("back")
   }
 }
 
