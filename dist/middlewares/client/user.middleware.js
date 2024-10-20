@@ -33,14 +33,16 @@ const requireAuth = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
             authToken: authToken
         }).select("_id fullName authToken");
         if (!validUser) {
-            res.redirect("/user/login");
             return;
         }
         res.locals.user = validUser;
         next();
     }
     else {
-        res.redirect("/user/login");
+        res.json({
+            code: 400
+        });
+        return;
     }
 });
 exports.requireAuth = requireAuth;

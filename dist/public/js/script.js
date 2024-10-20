@@ -46,8 +46,6 @@ if (aplayer) {
 const likeButton = document.querySelector(".inner-like")
 if (likeButton) {
   likeButton.addEventListener("click", () => {
-    likeButton.classList.toggle("active")
-
     const songId = likeButton.getAttribute("song-id")
 
     const type = likeButton.classList.contains("active") ? "true" : "false"
@@ -58,8 +56,11 @@ if (likeButton) {
       .then((res) => res.json())
       .then((data) => {
         if (data.code === 200) {
+          likeButton.classList.toggle("active")
           const likeCount = likeButton.querySelector(".like-count")
           likeCount.textContent = data.totalLike
+        } else if(data.code === 400) {
+          alert("Vui lòng đăng nhập để có thể thích bài hát")
         }
       })
   })

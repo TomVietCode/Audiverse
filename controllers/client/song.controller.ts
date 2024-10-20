@@ -47,10 +47,13 @@ export const detail = async (req: Request, res: Response) => {
       status: "active",
     })
 
+    if(!song) {
+      return res.redirect("back")
+    }
     const [singer, topic, favSong] = await Promise.all([
       Singer.findOne({ _id: song.singerId }).select("name"),
       Topic.findOne({ _id: song.topicId }).select("title"),
-      FavSong.findOne({ userId: res.locals.user.id, songId: song.id }),
+      FavSong.findOne({ userId: res.locals.user?.id, songId: song.id }),
     ])
 
     res.render("client/pages/songs/detail", {
@@ -62,7 +65,7 @@ export const detail = async (req: Request, res: Response) => {
     })
   } catch (error) {
     console.log(error)
-    // res.redirect("back")
+    res.redirect("back")
   }
 }
 

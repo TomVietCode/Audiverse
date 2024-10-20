@@ -24,7 +24,6 @@ export const requireAuth = async (req: Request, res: Response, next: NextFunctio
     }).select("_id fullName authToken")
 
     if(!validUser){
-      res.redirect("/user/login")
       return
     }
 
@@ -32,6 +31,9 @@ export const requireAuth = async (req: Request, res: Response, next: NextFunctio
 
     next()
   }else{
-    res.redirect("/user/login")
+    res.json({
+      code: 400
+    })
+    return
   }
 }

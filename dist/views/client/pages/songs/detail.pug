@@ -20,7 +20,7 @@ block main
               <i class="fa-solid fa-headphones"></i>
               span(class="inner-number mr-1 total-listen") #{song.listens}
               | lượt nghe
-            div(class=`inner-action inner-like ${song.like.includes(user.id) ? 'active' : ''}` song-id=song.id)
+            div(class=`inner-action inner-like ${(user ? (song.like.includes(user.id) ? 'active' : '') : "")}` song-id=song.id)
               <i class="fa-regular fa-thumbs-up"></i> 
               span(class="like-count") #{song.like.length}
             div(class=`inner-action inner-heart ${favSong ? 'active' : ""}` song-id=song.id)

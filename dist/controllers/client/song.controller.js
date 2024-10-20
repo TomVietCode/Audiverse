@@ -47,16 +47,20 @@ const list = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.list = list;
 const detail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     const slugSong = req.params.slugSong;
     try {
         const song = yield song_model_1.default.findOne({
             slug: slugSong,
             status: "active",
         });
+        if (!song) {
+            return res.redirect("back");
+        }
         const [singer, topic, favSong] = yield Promise.all([
             singer_model_1.default.findOne({ _id: song.singerId }).select("name"),
             topic_model_1.default.findOne({ _id: song.topicId }).select("title"),
-            fav_song_model_1.default.findOne({ userId: res.locals.user.id, songId: song.id }),
+            fav_song_model_1.default.findOne({ userId: (_a = res.locals.user) === null || _a === void 0 ? void 0 : _a.id, songId: song.id }),
         ]);
         res.render("client/pages/songs/detail", {
             pageTitle: song.title,
@@ -68,6 +72,7 @@ const detail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     catch (error) {
         console.log(error);
+        res.redirect("back");
     }
 });
 exports.detail = detail;
